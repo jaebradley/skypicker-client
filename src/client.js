@@ -46,11 +46,11 @@ const searchLocationsByTerm = ({
     params: {
       term,
       locale,
-      locationTypes: locationTypes.map(type => locationTypeValues[type]),
+      location_types: locationTypes.map(type => locationTypeValues[type]),
       limit,
     },
     paramsSerializer,
-  })
+  }).then(response => response.data)
 );
 
 /* https://skypickerpublicapi.docs.apiary.io/#reference/locations/locations-collection/search-by-radius */
@@ -70,12 +70,12 @@ const searchLocationsByRadius = ({
       lon: coordinate.longitude,
       radius,
       locale,
-      locationTypes: locationTypes.map(type => locationTypeValues[type]),
+      location_types: locationTypes.map(type => locationTypeValues[type]),
       limit,
       sort: sortTypes.map(type => locationSortTypeValues[type]),
     },
     paramsSerializer,
-  })
+  }).then(response => response.data)
 );
 
 /* https://skypickerpublicapi.docs.apiary.io/#reference/locations/locations-collection/search-by-box */
@@ -96,12 +96,12 @@ const searchLocationsByBox = ({
       high_lat: highCoordinate.latitude,
       high_lon: highCoordinate.longitude,
       locale,
-      locationTypes: locationTypes.map(type => locationTypeValues[type]),
+      location_types: locationTypes.map(type => locationTypeValues[type]),
       limit,
       sort: sortTypes.map(type => locationSortTypeValues[type]),
     },
     paramsSerializer,
-  })
+  }).then(response => response.data)
 );
 
 /* https://skypickerpublicapi.docs.apiary.io/#reference/locations/locations-collection/get-by-id */
@@ -111,8 +111,8 @@ const getLocationById = ({
   locale,
 }) => (
   axios.get(`${SKYPICKER_BASE_API_URL}/locations`, {
-    params: { type: 'id ', id, locale },
-  })
+    params: { type: 'id', id, locale },
+  }).then(response => response.data)
 );
 
 /* https://skypickerpublicapi.docs.apiary.io/#reference/locations/locations-collection/get-dump */
@@ -127,17 +127,17 @@ const getLocationDump = ({
     params: {
       type: 'dump',
       locale,
-      locationTypes: locationTypes.map(type => locationTypeValues[type]),
+      location_types: locationTypes.map(type => locationTypeValues[type]),
       limit,
       sort: sortTypes.map(type => locationSortTypeValues[type]),
     },
     paramsSerializer,
-  })
+  }).then(response => response.data)
 );
 
 /* https://skypickerpublicapi.docs.apiary.io/#reference/airlines/get */
 
-const getAirlines = () => axios.get(`${SKYPICKER_BASE_API_URL}/airlines`);
+const getAirlines = () => axios.get(`${SKYPICKER_BASE_API_URL}/airlines`).then(response => response.data);
 
 /* https://skypickerpublicapi.docs.apiary.io/#reference/airline-logos/get */
 
@@ -235,7 +235,7 @@ const searchFlights = ({
       sort: flightSortTypeValues[sortType],
     }, optionalParameters),
     paramsSerializer,
-  });
+  }).then(response => response.data);
 };
 
 export {
