@@ -1,5 +1,5 @@
 {
-  "name": "skypicker-client",
+  "name": "skypicker",
   "version": "0.0.0-development",
   "description": "Client to connect to the Skypicker API",
   "main": "build/index.js",
