@@ -17,6 +17,9 @@ import {
 jest.setTimeout(10000);
 
 describe('Client', () => {
+  beforeEach(() => moment.tz.setDefault('America/New_York'));
+  afterEach(() => moment.tz.setDefault());
+
   describe('Integration tests', () => {
     describe('searchLocationsByTerm', () => {
       it('should fetch locations for Boston', async () => {
