@@ -9,8 +9,8 @@ describe('buildFlightSearchParameters', () => {
   const FEB_1_2018 = 1517445207;
   const FEB_16_2018 = 1518741208;
 
-  const FEB_1_2018_ISO_8601 = moment.unix(FEB_1_2018).toISOString();
-  const FEB_16_2018_ISO_8601 = moment.unix(FEB_16_2018).toISOString();
+  const FEB_1_2018_ISO_8601 = moment.unix(FEB_1_2018).format('YYYY-MM-DD');
+  const FEB_16_2018_ISO_8601 = moment.unix(FEB_16_2018).format('YYYY-MM-DD');
 
   const departureIdentifier = 'departureIdentifier';
   const arrivalIdentifier = 'arrivalIdentifier';
@@ -20,11 +20,17 @@ describe('buildFlightSearchParameters', () => {
   const sortType = FLIGHT_RESULTS_SORT_TYPES.PRICE;
 
   const timeRange = {
-    start: FEB_1_2018_ISO_8601,
-    end: FEB_16_2018_ISO_8601,
+    days: {
+      start: FEB_1_2018_ISO_8601,
+      end: FEB_16_2018_ISO_8601,
+    },
+    timeOfDay: {
+      start: '01:23',
+      end: '23:45',
+    },
   };
   const departureDateTimeRange = timeRange;
-  const returnDepartureTimeRange = timeRange;
+  const returnDepartureDateTimeRange = timeRange;
   const maximumHoursInFlight = 'maximumHoursInFlight';
   const passengerCount = 'passengerCount';
   const directFlightsOnly = true;
@@ -48,8 +54,8 @@ describe('buildFlightSearchParameters', () => {
       flyFrom: departureIdentifier,
       dateFrom: '31/01/2018',
       dateTo: '15/02/2018',
-      dtimefrom: '19:33',
-      dtimeto: '19:33',
+      dtimefrom: '01:23',
+      dtimeto: '23:45',
     };
     expect(parameters).toEqual(expected);
   });
@@ -59,7 +65,7 @@ describe('buildFlightSearchParameters', () => {
       departureIdentifier,
       arrivalIdentifier,
       departureDateTimeRange,
-      returnDepartureTimeRange,
+      returnDepartureDateTimeRange,
       maximumHoursInFlight,
       passengerCount,
       directFlightsOnly,
@@ -77,16 +83,16 @@ describe('buildFlightSearchParameters', () => {
       to: arrivalIdentifier,
       dateFrom: '31/01/2018',
       dateTo: '15/02/2018',
-      dtimefrom: '19:33',
-      dtimeto: '19:33',
+      dtimefrom: '01:23',
+      dtimeto: '23:45',
       locale,
       offset,
       limit,
       sort: 'price',
       returnFrom: '31/01/2018',
-      returndtimefrom: '19:33',
+      returndtimefrom: '01:23',
       returnTo: '15/02/2018',
-      returndtimeto: '19:33',
+      returndtimeto: '23:45',
       maxFlyDuration: maximumHoursInFlight,
       passengers: passengerCount,
       directFlights: 1,

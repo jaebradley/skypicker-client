@@ -5,7 +5,6 @@ import { FLIGHT_RESULTS_SORT_TYPES, AIRLINES_FILTER_TYPE } from './constants';
 /* https://momentjs.com/docs/#/displaying/format/ */
 
 const DATE_FORMAT = 'DD/MM/YYYY';
-const TIME_FORMAT = 'HH:mm';
 
 const flightSortTypeValues = Object.freeze({
   [FLIGHT_RESULTS_SORT_TYPES.DATE]: 'date',
@@ -14,11 +13,41 @@ const flightSortTypeValues = Object.freeze({
   [FLIGHT_RESULTS_SORT_TYPES.QUALITY]: 'quality',
 });
 
+const getFormattedDateTimeRange = (range) => {
+  const formattedRange = {};
+
+  if (range) {
+    if (range.days) {
+      if (range.days.start) {
+        const startDate = moment(range.days.start, moment.ISO_8601);
+        formattedRange.startDate = startDate.format(DATE_FORMAT);
+      }
+
+      if (range.days.end) {
+        const endDate = moment(range.days.end, moment.ISO_8601);
+        formattedRange.endDate = endDate.format(DATE_FORMAT);
+      }
+    }
+
+    if (range.timeOfDay) {
+      if (range.timeOfDay.start) {
+        formattedRange.startTimeOfDay = range.timeOfDay.start;
+      }
+
+      if (range.timeOfDay.end) {
+        formattedRange.endTimeOfDay = range.timeOfDay.end;
+      }
+    }
+  }
+
+  return formattedRange;
+};
+
 const buildFlightSearchParameters = ({
   departureIdentifier,
   arrivalIdentifier,
   departureDateTimeRange,
-  returnDepartureTimeRange,
+  returnDepartureDateTimeRange,
   maximumHoursInFlight,
   passengerCount,
   directFlightsOnly,
@@ -31,36 +60,32 @@ const buildFlightSearchParameters = ({
   limit,
   sortType,
 }) => {
-  const departureStartDateTime = moment(departureDateTimeRange.start, moment.ISO_8601);
-  const departureEndDateTime = moment(departureDateTimeRange.end, moment.ISO_8601);
-
   const parameters = {
     flyFrom: departureIdentifier,
     to: arrivalIdentifier,
-    dateFrom: departureStartDateTime.format(DATE_FORMAT),
-    dateTo: departureEndDateTime.format(DATE_FORMAT),
-    dtimefrom: departureStartDateTime.format(TIME_FORMAT),
-    dtimeto: departureStartDateTime.format(TIME_FORMAT),
     locale,
     offset,
     limit,
     sort: flightSortTypeValues[sortType],
   };
 
-  if (returnDepartureTimeRange) {
-    if (returnDepartureTimeRange.start) {
-      const returnStartDateTime = moment(returnDepartureTimeRange.start, moment.ISO_8601);
+  if (departureDateTimeRange) {
+    const formattedDepartureDateTimeRange = getFormattedDateTimeRange(departureDateTimeRange);
 
-      parameters.returnFrom = returnStartDateTime.format(DATE_FORMAT);
-      parameters.returndtimefrom = returnStartDateTime.format(TIME_FORMAT);
-    }
+    parameters.dateFrom = formattedDepartureDateTimeRange.startDate;
+    parameters.dateTo = formattedDepartureDateTimeRange.endDate;
+    parameters.dtimefrom = formattedDepartureDateTimeRange.startTimeOfDay;
+    parameters.dtimeto = formattedDepartureDateTimeRange.endTimeOfDay;
+  }
 
-    if (returnDepartureTimeRange.end) {
-      const returnEndDateTime = moment(returnDepartureTimeRange.end, moment.ISO_8601);
+  if (returnDepartureDateTimeRange) {
+    const formattedReturnDepartureDateTimeRange
+      = getFormattedDateTimeRange(returnDepartureDateTimeRange);
 
-      parameters.returnTo = returnEndDateTime.format(DATE_FORMAT);
-      parameters.returndtimeto = returnEndDateTime.format(TIME_FORMAT);
-    }
+    parameters.returnFrom = formattedReturnDepartureDateTimeRange.startDate;
+    parameters.returnTo = formattedReturnDepartureDateTimeRange.endDate;
+    parameters.returndtimefrom = formattedReturnDepartureDateTimeRange.startTimeOfDay;
+    parameters.returndtimeto = formattedReturnDepartureDateTimeRange.endTimeOfDay;
   }
 
   if (maximumHoursInFlight) {

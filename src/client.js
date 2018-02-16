@@ -1,13 +1,12 @@
 import axios from 'axios';
 import qs from 'qs';
-import moment from 'moment';
+
+import buildFlightSearchParameters from './flightSearchParameterBuilder';
 
 import {
   SKYPICKER_BASE_API_URL,
   LOCATION_TYPES,
   LOCATION_RESULTS_SORT_TYPES,
-  FLIGHT_RESULTS_SORT_TYPES,
-  AIRLINES_FILTER_TYPE,
 } from './constants';
 
 const locationTypeValues = Object.freeze({
@@ -23,13 +22,6 @@ const locationSortTypeValues = Object.freeze({
   [LOCATION_RESULTS_SORT_TYPES.DESCENDING_NAME]: '-name',
   [LOCATION_RESULTS_SORT_TYPES.ASCENDING_RANK]: 'rank',
   [LOCATION_RESULTS_SORT_TYPES.DESCENDING_RANK]: '-rank',
-});
-
-const flightSortTypeValues = Object.freeze({
-  [FLIGHT_RESULTS_SORT_TYPES.DATE]: 'date',
-  [FLIGHT_RESULTS_SORT_TYPES.DURATION]: 'duration',
-  [FLIGHT_RESULTS_SORT_TYPES.PRICE]: 'price',
-  [FLIGHT_RESULTS_SORT_TYPES.QUALITY]: 'quality',
 });
 
 const paramsSerializer = params => qs.stringify(params, { arrayFormat: 'repeat' });
@@ -149,7 +141,7 @@ const searchFlights = ({
   departureIdentifier,
   arrivalIdentifier,
   departureDateTimeRange,
-  returnDepartureTimeRange,
+  returnDepartureDateTimeRange,
   maximumHoursInFlight,
   passengerCount,
   directFlightsOnly,
@@ -161,82 +153,28 @@ const searchFlights = ({
   offset,
   limit,
   sortType,
-}) => {
-  const optionalParameters = {};
-
-  const departureStartDateTime = moment(departureDateTimeRange.start, moment.ISO_8601);
-  const departureEndDateTime = moment(departureDateTimeRange.end, moment.ISO_8601);
-
-  if (returnDepartureTimeRange) {
-    if (returnDepartureTimeRange.start) {
-      const returnStartDateTime = moment(returnDepartureTimeRange.start, moment.ISO_8601);
-      optionalParameters.returnFrom = returnStartDateTime.format('DD/MM/YYYY');
-      optionalParameters.returndtimefrom = returnStartDateTime.hour();
-    }
-
-    if (returnDepartureTimeRange.end) {
-      const returnEndDateTime = moment(returnDepartureTimeRange.end, moment.ISO_8601);
-
-      optionalParameters.returnTo = returnEndDateTime.format('DD/MM/YYYY');
-      optionalParameters.returndtimeto = returnEndDateTime.hour();
-    }
-  }
-
-  if (maximumHoursInFlight) {
-    optionalParameters.maxFlyDuration = maximumHoursInFlight;
-  }
-
-  if (passengerCount) {
-    optionalParameters.passengers = passengerCount;
-  }
-
-  if (directFlightsOnly) {
-    optionalParameters.directFlights = 1;
-  }
-
-  if (currencyCode) {
-    optionalParameters.curr = currencyCode;
-  }
-
-  if (priceRange) {
-    if (priceRange.start) {
-      optionalParameters.price_from = priceRange.start;
-    }
-
-    if (priceRange.end) {
-      optionalParameters.price_to = priceRange.end;
-    }
-  }
-
-  if (maximumStopOverCount) {
-    optionalParameters.maxstopovers = maximumStopOverCount;
-  }
-
-  if (airlinesFilter) {
-    if (airlinesFilter.airlines && airlinesFilter.type) {
-      optionalParameters.selectedAirlines = airlinesFilter.airlines.join(',');
-
-      const excludeAirlines = airlinesFilter.type === AIRLINES_FILTER_TYPE.EXCLUDE;
-      optionalParameters.selectedAirlinesExclude = excludeAirlines;
-    }
-  }
-
-  return axios.get(`${SKYPICKER_BASE_API_URL}/flights`, {
-    params: Object.assign({}, {
-      flyFrom: departureIdentifier,
-      to: arrivalIdentifier,
-      dateFrom: departureStartDateTime.format('DD/MM/YYYY'),
-      dateTo: departureEndDateTime.format('DD/MM/YYYY'),
-      dtimefrom: departureStartDateTime.hour(),
-      dtimeto: departureStartDateTime.hour(),
+}) => (
+  axios.get(`${SKYPICKER_BASE_API_URL}/flights`, {
+    params: buildFlightSearchParameters({
+      departureIdentifier,
+      arrivalIdentifier,
+      departureDateTimeRange,
+      returnDepartureDateTimeRange,
+      maximumHoursInFlight,
+      passengerCount,
+      directFlightsOnly,
+      currencyCode,
+      priceRange,
+      maximumStopOverCount,
+      airlinesFilter,
       locale,
       offset,
       limit,
-      sort: flightSortTypeValues[sortType],
-    }, optionalParameters),
+      sortType,
+    }),
     paramsSerializer,
-  }).then(response => response.data);
-};
+  }).then(response => response.data)
+);
 
 export {
   searchLocationsByTerm,

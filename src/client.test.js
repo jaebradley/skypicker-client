@@ -1,12 +1,16 @@
+import moment from 'moment-timezone';
 import {
   searchLocationsByTerm,
   searchLocationsByRadius,
   getLocationById,
   getAirlines,
+  searchFlights,
 } from './client';
 import {
   LOCATION_TYPES,
   LOCATION_RESULTS_SORT_TYPES,
+  AIRLINES_FILTER_TYPE,
+  FLIGHT_RESULTS_SORT_TYPES,
 } from './constants';
 
 describe('Client', () => {
@@ -123,6 +127,129 @@ describe('Client', () => {
 
         expect(data.length).toBeGreaterThan(0);
         expect(data).toEqual(expect.arrayContaining(expectedAirlines));
+      });
+    });
+
+    describe('searchFlights', () => {
+      const today = moment();
+      const weekFromToday = moment().add(7, 'days');
+      const twoWeeksFromToday = moment().add(14, 'days');
+      const threeWeeksFromToday = moment().add(21, 'days');
+
+      const formattedToday = today.format('YYYY-MM-DD');
+      const formattedWeekFromToday = weekFromToday.format('YYYY-MM-DD');
+      const formattedTwoWeeksFromToday = twoWeeksFromToday.format('YYYY-MM-DD');
+      const formattedThreeWeeksFromToday = threeWeeksFromToday.format('YYYY-MM-DD');
+
+      const departureIdentifier = 'BOS';
+      const arrivalIdentifier = 'LON';
+
+      const departureDateTimeRange = {
+        days: {
+          start: formattedToday,
+          end: formattedWeekFromToday,
+        },
+        timeOfDay: {
+          start: '01:23',
+          end: '23:45',
+        },
+      };
+      const returnDepartureDateTimeRange = {
+        days: {
+          start: formattedTwoWeeksFromToday,
+          end: formattedThreeWeeksFromToday,
+        },
+        timeOfDay: {
+          start: '01:23',
+          end: '23:45',
+        },
+      };
+
+      const maximumHoursInFlight = 10;
+      const passengerCount = 2;
+      const directFlightsOnly = true;
+      const currencyCode = 'USD';
+      const priceRange = {
+        start: 250,
+        end: 10000,
+      };
+      const airlinesFilter = {
+        airlines: ['WW', 'D8'],
+        type: AIRLINES_FILTER_TYPE.EXCLUDE,
+      };
+      const locale = 'es-ES';
+      const limit = 2;
+      const sortType = FLIGHT_RESULTS_SORT_TYPES.PRICE;
+
+      it('should search flights from BOS to anywhere', async () => {
+        const results = await searchFlights({
+          departureIdentifier,
+          departureDateTimeRange,
+        });
+        expect(results).toEqual(expect.objectContaining({
+          search_params: expect.objectContaining({
+            to_type: 'anywhere',
+            flyFrom_type: 'airport',
+            seats: {
+              infants: 0,
+              passengers: 1,
+              adults: 1,
+              children: 0,
+            },
+          }),
+          connections: [],
+          currency: 'EUR',
+          currency_rate: 1,
+          all_stopover_airports: [],
+          data: expect.any(Array),
+          ref_tasks: [],
+          refresh: [],
+          del: 0,
+          all_airlines: expect.any(Array),
+          time: 1,
+        }));
+      });
+
+      it('should search flights from BOS to LON', async () => {
+        const results = await searchFlights({
+          departureIdentifier,
+          arrivalIdentifier,
+          departureDateTimeRange,
+          returnDepartureDateTimeRange,
+          passengerCount,
+          directFlightsOnly,
+          maximumHoursInFlight,
+          currencyCode,
+          priceRange,
+          airlinesFilter,
+          locale,
+          limit,
+          sortType,
+        });
+
+        expect(results).toEqual(expect.objectContaining({
+          search_params: expect.objectContaining({
+            to_type: 'airport',
+            flyFrom_type: 'airport',
+            seats: {
+              infants: 0,
+              passengers: 2,
+              adults: 2,
+              children: 0,
+            },
+          }),
+          connections: [],
+          currency: 'USD',
+          all_stopover_airports: [],
+          data: expect.any(Array),
+          ref_tasks: [],
+          refresh: [],
+          del: 0,
+          all_airlines: expect.any(Array),
+          time: 1,
+        }));
+        expect(results.data.length).toBeGreaterThan(0);
+        expect(results.data.length).toBeLessThanOrEqual(limit);
       });
     });
   });
