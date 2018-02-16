@@ -17,8 +17,7 @@ import {
 jest.setTimeout(10000);
 
 describe('Client', () => {
-  beforeEach(() => moment.tz.setDefault('America/New_York'));
-  afterEach(() => moment.tz.setDefault());
+  const TZ = 'America/New_York';
 
   describe('Integration tests', () => {
     describe('searchLocationsByTerm', () => {
@@ -137,10 +136,10 @@ describe('Client', () => {
     });
 
     describe('searchFlights', () => {
-      const today = moment();
-      const weekFromToday = moment().add(7, 'days');
-      const twoWeeksFromToday = moment().add(14, 'days');
-      const threeWeeksFromToday = moment().add(21, 'days');
+      const today = moment.tz(TZ);
+      const weekFromToday = moment.tz(TZ).add(7, 'days');
+      const twoWeeksFromToday = moment.tz(TZ).add(14, 'days');
+      const threeWeeksFromToday = moment.tz(TZ).add(21, 'days');
 
       const formattedToday = today.format('YYYY-MM-DD');
       const formattedWeekFromToday = weekFromToday.format('YYYY-MM-DD');

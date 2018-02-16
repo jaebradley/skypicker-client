@@ -3,14 +3,13 @@ import buildFlightSearchParameters from './flightSearchParameterBuilder';
 import { FLIGHT_RESULTS_SORT_TYPES, AIRLINES_FILTER_TYPE } from './constants';
 
 describe('buildFlightSearchParameters', () => {
-  beforeEach(() => moment.tz.setDefault('America/New_York'));
-  afterEach(() => moment.tz.setDefault());
+  const TZ = 'America/New_York';
 
   const FEB_1_2018 = 1517445207;
   const FEB_16_2018 = 1518741208;
 
-  const FEB_1_2018_ISO_8601 = moment.unix(FEB_1_2018).format('YYYY-MM-DD');
-  const FEB_16_2018_ISO_8601 = moment.unix(FEB_16_2018).format('YYYY-MM-DD');
+  const FEB_1_2018_ISO_8601 = moment.unix(FEB_1_2018).tz(TZ).format('YYYY-MM-DD');
+  const FEB_16_2018_ISO_8601 = moment.unix(FEB_16_2018).tz(TZ).format('YYYY-MM-DD');
 
   const departureIdentifier = 'departureIdentifier';
   const arrivalIdentifier = 'arrivalIdentifier';
