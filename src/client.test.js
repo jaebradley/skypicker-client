@@ -13,6 +13,9 @@ import {
   FLIGHT_RESULTS_SORT_TYPES,
 } from './constants';
 
+/* Increase timeout from 5s to 10s */
+jest.setTimeout(10000);
+
 describe('Client', () => {
   describe('Integration tests', () => {
     describe('searchLocationsByTerm', () => {
@@ -181,9 +184,10 @@ describe('Client', () => {
       const limit = 2;
       const sortType = FLIGHT_RESULTS_SORT_TYPES.PRICE;
 
-      it('should search flights from BOS to anywhere', async () => {
+      xit('should search one-way flights from BOS to LON', async () => {
         const results = await searchFlights({
           departureIdentifier,
+          arrivalIdentifier,
           departureDateTimeRange,
         });
         expect(results).toEqual(expect.objectContaining({
@@ -210,7 +214,7 @@ describe('Client', () => {
         }));
       });
 
-      it('should search flights from BOS to LON', async () => {
+      it('should search round-trip flights from BOS to LON', async () => {
         const results = await searchFlights({
           departureIdentifier,
           arrivalIdentifier,
