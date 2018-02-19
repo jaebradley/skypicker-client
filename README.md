@@ -177,6 +177,7 @@ const locationDump = await getLocationDump({
 
 * `maximumStopOverCount: (optional; non-negative integer)` - Maximum number of stopovers
 * `airlinesFilter: (optional; object)` - Either *excludes* or *includes* the specified airlines. The `airlinesFilter` object has two properties: `airlines` (an `array` of `IATA` codes) and `type` (an `AIRLINES_FILTER_TYPE` value).
+* `partner: (optional; string)` - The Skypicker Partner ID assigned to your account. Use `picky` for testing.
 
 ```javascript
 {

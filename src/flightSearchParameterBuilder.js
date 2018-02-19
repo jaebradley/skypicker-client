@@ -55,6 +55,7 @@ const buildFlightSearchParameters = ({
   priceRange,
   maximumStopOverCount,
   airlinesFilter,
+  partner,
   locale,
   offset,
   limit,
@@ -63,6 +64,7 @@ const buildFlightSearchParameters = ({
   const parameters = {
     flyFrom: departureIdentifier,
     to: arrivalIdentifier,
+    partner,
     locale,
     offset,
     limit,
