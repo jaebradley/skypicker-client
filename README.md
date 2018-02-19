@@ -16,14 +16,14 @@ npm install skypicker --save
 
 ## API
 
-* [`searchLocationsByTerm`](#searchLocationsByTerm)
-* [`searchLocationsByRadius`](#searchLocationsByRadius)
-* [`searchLocationsByBox`](#searchLocationsByBox)
-* [`getLocationById`](#getLocationById)
-* [`getLocationDump`](#getLocationDump)
-* [`getAirlines`](#getAirlines)
-* [`getAirlineIcon`](#getAirlineIcon)
-* [`searchFlights`](#searchFlights)
+* [`searchLocationsByTerm`](#searchlocationsbyterm)
+* [`searchLocationsByRadius`](#searchlocationsbyradius)
+* [`searchLocationsByBox`](#searchlocationsbybox)
+* [`getLocationById`](#getlocationbyid)
+* [`getLocationDump`](#getlocationdump)
+* [`getAirlines`](#getairlines)
+* [`getAirlineIcon`](#getairlineicon)
+* [`searchFlights`](#searchflights)
 
 ### `searchLocationsByTerm`
 
