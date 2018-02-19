@@ -16,6 +16,15 @@ npm install skypicker --save
 
 ## API
 
+* [`searchLocationsByTerm`](#searchLocationsByTerm)
+* [`searchLocationsByRadius`](#searchLocationsByRadius)
+* [`searchLocationsByBox`](#searchLocationsByBox)
+* [`getLocationById`](#getLocationById)
+* [`getLocationDump`](#getLocationDump)
+* [`getAirlines`](#getAirlines)
+* [`getAirlineIcon`](#getAirlineIcon)
+* [`searchFlights`](#searchFlights)
+
 ### `searchLocationsByTerm`
 
 * `term: (required; string)` - The search parameter used to identify a airport, city, country, etc.
@@ -36,6 +45,102 @@ const tenAirportsThatMatchLoganWithSpanishOutput = await searchLocationsByTerm({
   limit: 10,
 });
 ```
+
+### `searchLocationsByRadius`
+
+* `coordinate: (required; object)` - An object with `latitude` and `longitude` properties that represents a point
+* `radius: (optional; non-negative integer)` - Represents the `kilometers` from the specified `coordinate` to search. Defaults to `250 kilometers`.
+* `locale: (optional; string)` - The returned output matches the `locale` specified. The default value is `en`.
+* `locationTypes: (optional; array)` - There are six types of locations: airports, autonomous territories, cities, countries, stations, and subdivisions. These location types are captured in the `LOCATION_TYPES` constant. The default behavior is to search all location types.
+* `limit: (optional; positive integer)` - This specifies the number of records returned by the API. The default value is `20`.
+* `sort: (optional: LOCATION_RESULTS_SORT_TYPES)` - Specifies whether output should be sorted by `name` or `rank` in an ascending or descending manner
+* [`REST` API documentation](https://skypickerpublicapi.docs.apiary.io/#reference/locations/locations-collection/search-by-radius)
+
+#### Example
+
+```javascript
+import { searchLocationsByRadius, LOCATION_TYPES, LOCATION_RESULTS_SORT_TYPES } from 'skypicker';
+
+const tenAirportsWithinA100KilometerRadiusOfNewYorkCityWithSpanishOutput = await searchLocationsByRadius({
+  coordinate: {
+    latitude: 40.7128,
+    longitude: -74.0059,
+  },
+  radius: 100,
+  locale: 'es-ES',
+  locationTypes: [LOCATION_TYPES.AIRPORT],
+  limit: 10,
+  sort: LOCATION_RESULTS_SORT_TYPES.DESCENDING_RANK,
+})
+```
+
+### `searchLocationsByBox`
+
+* `lowCoordinate: (required; object)` - Specifies a `coordinate` object with `latitude` and `longitude` properties that represent the southwest corner of the geo search box.
+* `highCoordinate: (required; object)` - Specifies a `coordinate` object with `latitude` and `longitude` properties that represent the northeast corner of the geo search box.
+* `locale: (optional; string)` - The returned output matches the `locale` specified. The default value is `en`.
+* `locationTypes: (optional; array)` - There are six types of locations: airports, autonomous territories, cities, countries, stations, and subdivisions. These location types are captured in the `LOCATION_TYPES` constant. The default behavior is to search all location types.
+* `limit: (optional; positive integer)` - This specifies the number of records returned by the API. The default value is `20`.
+* `sort: (optional: LOCATION_RESULTS_SORT_TYPES)` - Specifies whether output should be sorted by `name` or `rank` in an ascending or descending manner
+* [`REST` API documentation](https://skypickerpublicapi.docs.apiary.io/#reference/locations/locations-collection/search-by-box)
+
+#### Example
+
+```javascript
+import { searchLocationsByBox, LOCATION_TYPES, LOCATION_RESULTS_SORT_TYPES } from 'skypicker';
+
+const boxSearch = await searchLocationsByBox({
+  lowCoordinate: {
+    latitude: 40.200610,
+    longitude: -74.624328,
+  },
+  highCoordinate: {
+    latitude: 44.763212,
+    longitude: -73.376543,
+  },
+  locale: 'es-ES',
+  locationTypes: [LOCATION_TYPES.AIRPORT],
+  limit: 10,
+  sort: LOCATION_RESULTS_SORT_TYPES.DESCENDING_RANK,
+})
+```
+
+### `getLocationById`
+
+* `id: (required; string)` - Specifies the IATA airport or [ISO-3166 location code](https://en.wikipedia.org/wiki/ISO_3166)
+* `locale: (optional; string)` - The returned output matches the `locale` specified. The default value is `en`.
+* [`REST` API documentation](https://skypickerpublicapi.docs.apiary.io/#reference/locations/locations-collection/get-by-id)
+
+### `getLocationDump`
+
+* `locale: (optional; string)` - The returned output matches the `locale` specified. The default value is `en`.
+* `locationTypes: (optional; array)` - There are six types of locations: airports, autonomous territories, cities, countries, stations, and subdivisions. These location types are captured in the `LOCATION_TYPES` constant. The default behavior is to search all location types.
+* `limit: (optional; positive integer)` - This specifies the number of records returned by the API. The default value is `20`.
+* `sort: (optional: LOCATION_RESULTS_SORT_TYPES)` - Specifies whether output should be sorted by `name` or `rank` in an ascending or descending manner
+* [`REST` API documentation](https://skypickerpublicapi.docs.apiary.io/#reference/locations/locations-collection/get-dump)
+
+#### Example
+
+```javascript
+import { getLocationDump, LOCATION_TYPES, LOCATION_RESULTS_SORT_TYPES } from 'skypicker';
+
+const locationDump = await getLocationDump({
+  locationTypes: [LOCATION_TYPES.AIRPORT],
+  limit: 10,
+  sort: LOCATION_RESULTS_SORT_TYPES.DESCENDING_RANK,
+})
+```
+
+### `getAirlines`
+
+* Gets all airlines (both `LC (legacy carrier)` and `LCC (low-cost carrier)`)
+* No parameters needed
+* [`REST` API documentation](https://skypickerpublicapi.docs.apiary.io/#reference/airlines/get-dump)
+
+### `getAirlineIcon`
+
+* `airlineCode: (required; string)` - Specifies the airline's `IATA` code
+* [`REST` API documentation](https://skypickerpublicapi.docs.apiary.io/#reference/airline-logos/get-dump)
 
 ### `searchFlights`
 
