@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jaebradley/skypicker-client.svg?branch=master)](https://travis-ci.org/jaebradley/skypicker-client)
 [![npm](https://img.shields.io/npm/v/skypicker.svg)](https://www.npmjs.com/package/skypicker)
-[![npm](https://img.shields.io/npm/dt/skypicker.svg)](https://www.npmjs.com/package/skypicker)
+[![npm](https://img.shields.io/npm/dt/skypicker.svg)](https://www.npmjs.com/package/skypicker) [![Greenkeeper badge](https://badges.greenkeeper.io/jaebradley/skypicker-client.svg)](https://greenkeeper.io/)
 
 ## Introduction
 
