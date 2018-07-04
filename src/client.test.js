@@ -23,7 +23,7 @@ describe('Client', () => {
     describe('searchLocationsByTerm', () => {
       it('should fetch locations for Boston', async () => {
         const data = await searchLocationsByTerm({ term: 'Boston' });
-        expect(data.locations.length).toEqual(1);
+        expect(data.locations.length).toEqual(3);
 
         const firstLocation = data.locations[0];
         expect(firstLocation.id).toEqual('boston_ma_us');
@@ -33,14 +33,14 @@ describe('Client', () => {
         expect(firstLocation.type).toEqual('city');
       });
 
-      it('should fetch locations for "LA" with Spanish locale, other location types, and a limit', async () => {
+      it('should fetch locations for "Las Vegas" with Spanish locale, other location types, and a limit', async () => {
         const data = await searchLocationsByTerm({
-          term: 'LA',
+          term: 'Las Vegas',
           locale: 'es-ES',
           locationTypes: [LOCATION_TYPES.AIRPORT, LOCATION_TYPES.CITY],
           limit: 3,
         });
-        expect(data.locations.length).toEqual(3);
+        expect(data.locations.length).toEqual(1);
 
         const firstLocation = data.locations[0];
         expect(firstLocation.id).toEqual('las-vegas_nv_us');
