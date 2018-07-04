@@ -81,8 +81,7 @@ const buildFlightSearchParameters = ({
   }
 
   if (returnDepartureDateTimeRange) {
-    const formattedReturnDepartureDateTimeRange
-      = getFormattedDateTimeRange(returnDepartureDateTimeRange);
+    const formattedReturnDepartureDateTimeRange = getFormattedDateTimeRange(returnDepartureDateTimeRange); // eslint-disable-line max-len
 
     parameters.returnFrom = formattedReturnDepartureDateTimeRange.startDate;
     parameters.returnTo = formattedReturnDepartureDateTimeRange.endDate;
