@@ -34,26 +34,26 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@commitlint/cli": "^6.0.2",
-    "@commitlint/config-angular": "^6.0.2",
-    "@commitlint/prompt": "^6.0.2",
-    "@commitlint/prompt-cli": "^6.0.2",
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-angular": "^7.0.1",
+    "@commitlint/prompt": "^7.0.0",
+    "@commitlint/prompt-cli": "^7.0.0",
     "axios-debug": "0.0.4",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "codecov": "^3.0.0",
-    "dotenv": "^4.0.0",
-    "eslint": "^4.12.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
+    "codecov": "^3.0.2",
+    "dotenv": "^6.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
     "husky": "^0.14.3",
-    "jest": "^22.0.3",
-    "semantic-release": "^12.4.1",
-    "travis-deploy-once": "^4.3.4"
+    "jest": "^23.2.0",
+    "semantic-release": "^15.6.0",
+    "travis-deploy-once": "^5.0.0"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.18.0",
     "moment-timezone": "^0.5.14",
     "qs": "^6.5.1"
   }
