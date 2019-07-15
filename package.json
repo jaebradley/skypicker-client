@@ -36,7 +36,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-angular": "^8.1.0",
-    "@commitlint/prompt": "^7.0.0",
+    "@commitlint/prompt": "^8.1.0",
     "@commitlint/prompt-cli": "^8.1.0",
     "axios-debug": "0.0.4",
     "babel-cli": "^6.26.0",
