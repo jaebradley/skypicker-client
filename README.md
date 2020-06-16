@@ -1,5 +1,6 @@
 # skypicker-client
 
+![Skypicker Client](https://github.com/jaebradley/skypicker-client/workflows/Skypicker%20Client/badge.svg)
 [![npm](https://img.shields.io/npm/v/skypicker.svg)](https://www.npmjs.com/package/skypicker)
 [![npm](https://img.shields.io/npm/dt/skypicker.svg)](https://www.npmjs.com/package/skypicker)
 
