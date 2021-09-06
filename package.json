@@ -55,7 +55,7 @@
     "utf-8-validate": "^5.0.2"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.3",
     "moment-timezone": "^0.5.31",
     "qs": "^6.9.4"
   }
