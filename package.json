@@ -57,6 +57,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "moment-timezone": "^0.5.31",
-    "qs": "^6.9.4"
+    "qs": "^6.9.7"
   }
 }
